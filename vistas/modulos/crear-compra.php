@@ -180,7 +180,7 @@
                 BOTÓN PARA AGREGAR PRODUCTO
                 ======================================-->
 
-                <button type="button" class="btn btn-default hidden-lg">Agregar producto</button>
+                <button type="button" class="btn btn-default hidden-lg btnAgregarProductoC">Agregar producto</button>
 
                 <hr>
 
