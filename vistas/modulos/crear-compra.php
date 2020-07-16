@@ -138,43 +138,10 @@
 
                 <div class="form-group row nuevoProducto">
 
-                  <!-- Descripción del producto -->
-                  
-                  <!-- <div class="col-xs-6" style="padding-right:0px">
-                  
-                    <div class="input-group">
-                      
-                      <span class="input-group-addon"><button type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></span>
-
-                      <input type="text" class="form-control" id="agregarProductoCompra" name="agregarProductoCompra" placeholder="Descripción del producto" required>
-
-                    </div>
-
-                  </div> -->
-
-                  <!-- Cantidad del producto -->
-
-                  <!-- <div class="col-xs-3">
-                    
-                     <input type="number" class="form-control" id="nuevaCantidadProductoC" name="nuevaCantidadProductoC" min="1" placeholder="0" required>
-
-                  </div>  -->
-
-                  <!-- Precio del producto -->
-
-                  <!-- <div class="col-xs-3" style="padding-left:0px">
-
-                    <div class="input-group">
-
-                      <span class="input-group-addon"><i class="ion ion-social-usd"></i></span>
-                         
-                      <input type="number" min="1" class="form-control" id="nuevoPrecioProductoC" name="nuevoPrecioProductoC" placeholder="000000" readonly required>
-         
-                    </div>
-                     
-                  </div>  -->
 
                 </div>
+
+                <input type="hidden" id="listaProductosC" name="listaProductosC">
 
                 <!--=====================================
                 BOTÓN PARA AGREGAR PRODUCTO
@@ -211,7 +178,11 @@
                             
                             <div class="input-group">
                            
-                              <input type="number" class="form-control" min="0" id="nuevoImpuestoCompra" name="nuevoImpuestoCompra" placeholder="0" required>
+                              <input type="number" class="form-control input-lg" min="0" id="nuevoImpuestoCompra" name="nuevoImpuestoCompra" placeholder="0" required>
+
+                              <input type="hidden" name="nuevoPrecioImpuestoC" id="nuevoPrecioImpuestoC" required>
+                              <input type="hidden" name="nuevoPrecioNetoC" id="nuevoPrecioNetoC" required>
+
                               <span class="input-group-addon"><i class="fa fa-percent"></i></span>
                         
                             </div>
@@ -224,8 +195,8 @@
                            
                               <span class="input-group-addon"><i class="ion ion-social-usd"></i></span>
 
-                              <input type="number" min="1" class="form-control" id="nuevoTotalCompra" name="nuevoTotalCompra" placeholder="00000" readonly required>
-                              
+                              <input type="text" class="form-control input-lg" id="nuevoTotalCompra" name="nuevoTotalCompra" total="" placeholder="00000" readonly required>
+                              <input type="hidden" name="totalCompra" id="totalCompra">
                         
                             </div>
 
@@ -255,16 +226,20 @@
                   
                       <select class="form-control" id="nuevoMetodoPagoC" name="nuevoMetodoPagoC" required>
                         <option value="">Seleccione método de pago</option>
-                        <option value="efectivo">Efectivo</option>
-                        <option value="tarjetaCredito">Tarjeta Crédito</option>
-                        <option value="tarjetaDebito">Tarjeta Débito</option>                  
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="TC">Tarjeta Crédito</option>
+                        <option value="TD">Tarjeta Débito</option>                  
                       </select>    
 
                     </div>
 
                   </div>
 
-                  <div class="col-xs-6" style="padding-left:0px">
+                  <div class="cajasMetodoPagoC"></div>
+
+                  <input type="hidden" id="listaMetodoPagoC" name="listaMetodoPagoC">
+
+                  <!-- <div class="col-xs-6" style="padding-left:0px">
                         
                     <div class="input-group">
                          
@@ -274,7 +249,7 @@
                       
                     </div>
 
-                  </div>
+                  </div> -->
 
                 </div>
 
@@ -286,11 +261,16 @@
 
           <div class="box-footer">
 
-            <button type="submit" class="btn btn-primary pull-right">Guardar venta</button>
+            <button type="submit" class="btn btn-primary pull-right">Guardar compra</button>
 
           </div>
 
         </form>
+
+        <?php
+          $guardarCompra = new ControladorCompras();
+          $guardarCompra -> ctrCrearCompra();
+        ?>
 
         </div>
             

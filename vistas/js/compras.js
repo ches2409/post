@@ -91,7 +91,7 @@ $(".tablaCompras tbody").on("click", "button.agregarProducto", function(){
 
                             '<span class="input-group-addon"><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto="'+idProducto+'"><i class="fa fa-times"></i></button></span>'+
 
-                            '<input type="text" class="form-control agregarProductoCompra" name="agregarProductoCompra" value="'+nombre+'" readOnly required>'+
+                            '<input type="text" class="form-control agregarProductoCompra" idProducto="'+idProducto+'" name="agregarProductoCompra" value="'+nombre+'" readOnly required>'+
 
                         '</div>'+
 
@@ -101,7 +101,7 @@ $(".tablaCompras tbody").on("click", "button.agregarProducto", function(){
 
                     '<div class="col-xs-3">'+
 
-                        '<input type="number" class="form-control nuevaCantidadProductoC" name="nuevaCantidadProductoC" min="1" value="1" stock="'+stock+'" required>'+
+                        '<input type="number" class="form-control nuevaCantidadProductoC" name="nuevaCantidadProductoC" min="1" value="1" stock="'+stock+'" nuevoStockC="'+(Number(stock) + Number(1))+'" required>'+
 
                     '</div>'+
 
@@ -113,7 +113,7 @@ $(".tablaCompras tbody").on("click", "button.agregarProducto", function(){
 
                             '<span class="input-group-addon"><i class="ion ion-social-usd"></i></span>'+
 
-                            '<input type="number" min="1" class="form-control nuevoPrecioProductoC" precioRealC="'+precio+'" name="nuevoPrecioProductoC" value="'+precio+'" readonly required>'+
+                            '<input type="text" class="form-control nuevoPrecioProductoC" precioRealC="'+precio+'" name="nuevoPrecioProductoC" value="'+precio+'" readonly required>'+
             
                         '</div>'+
 
@@ -121,6 +121,19 @@ $(".tablaCompras tbody").on("click", "button.agregarProducto", function(){
 
                 '</div>'             
             )
+
+            // Sumar el total de los precios
+            sumarTotalPreciosC();
+
+            // Agregar Impuesto
+            agregarImpuestoC();
+
+            // AGRUPAR PRODUCTOS EN JSON
+            listarProductosC()
+
+            // FORMATO DE PRECIO A LOS PRODUCTOS
+            $(".nuevoPrecioProductoC").number(true, 2);
+
         }
     })
 });
@@ -167,6 +180,24 @@ ALMACENAR EN LOCALSTORAGE EL ID DEL PRODUCTOS A QUITAR
     $("button.recuperarBoton[idProducto='"+idProducto+"']").removeClass('btn-default');
     $("button.recuperarBoton[idProducto='"+idProducto+"']").addClass('btn-primary agregarProducto');
 
+    if($(".nuevoProducto").children().length==0){
+
+        $("#nuevoImpuestoCompra").val(0);
+        $("#nuevoTotalCompra").val(0);
+        $("#totalCompra").val(0);
+        $("#nuevoTotalCompra").attr("total", 0);
+    }else{
+
+        // Sumar el total de los precios
+        sumarTotalPreciosC();
+
+        // Agregar Impuesto
+        agregarImpuestoC();
+
+        // AGRUPAR PRODUCTOS EN JSON
+        listarProductosC()
+    }
+
 })
 
 /*=============================================
@@ -178,6 +209,7 @@ AGREGANDO PRODUCTOS DESDE EL BOTON PARA DISPOSITVOS
 $(".btnAgregarProductoC").click(function(){
 
     numProducto ++;
+    let idProducto
 
     let datos = new FormData();
     datos.append("traerProductos", "ok");
@@ -205,7 +237,7 @@ $(".btnAgregarProductoC").click(function(){
 
                             '<span class="input-group-addon"><button type="button" class="btn btn-danger btn-xs quitarProducto" idProducto><i class="fa fa-times"></i></button></span>' +
 
-                            '<select class="form-control nuevoNombreProducto" id="productoC'+numProducto+'" idProducto name="nuevoNombreProducto" required>' +
+                            '<select class="form-control nuevoNombreProducto agregarProductoCompra" id="productoC'+numProducto+'" idProducto name="nuevoNombreProducto" required>' +
 
                                 '<option>Seleccione el producto</option>' +
 
@@ -219,7 +251,7 @@ $(".btnAgregarProductoC").click(function(){
 
                     '<div class="col-xs-3 ingresoCantidadC">' +
 
-                        '<input type="number" class="form-control nuevaCantidadProductoC" name="nuevaCantidadProductoC" min="1" value="1" stock required>' +
+                        '<input type="number" class="form-control nuevaCantidadProductoC" name="nuevaCantidadProductoC" min="1" value="1" stock nuevoStockC required>' +
 
                     '</div>' +
 
@@ -231,7 +263,7 @@ $(".btnAgregarProductoC").click(function(){
 
                             '<span class="input-group-addon"><i class="ion ion-social-usd"></i></span>' +
 
-                            '<input type="number" min="1" class="form-control nuevoPrecioProductoC" precioRealC name="nuevoPrecioProductoC" readonly required>' +
+                            '<input type="text" class="form-control nuevoPrecioProductoC" precioRealC name="nuevoPrecioProductoC" readonly required>' +
 
                         '</div>' +
 
@@ -254,8 +286,18 @@ $(".btnAgregarProductoC").click(function(){
 
             }
 
-        }
+            // Sumar el total de los precios
+            sumarTotalPreciosC();
 
+            // Agregar Impuesto
+            agregarImpuestoC();
+
+            // FORMATO DE PRECIO A LOS PRODUCTOS
+            $(".nuevoPrecioProductoC").number(true, 2);
+
+            
+
+        }
 
     })
 })
@@ -288,8 +330,12 @@ $(".formularioCompra").on("change", "select.nuevoNombreProducto", function () {
         success: function (respuesta) {
             
             $(nuevaCantidadProductoC).attr("stock", respuesta["stock"]);
+            $(nuevaCantidadProductoC).attr("nuevoStockC", Number(respuesta["stock"])+1);
             $(nuevoPrecioProductoC).val(respuesta["precio_compra"]);
             $(nuevoPrecioProductoC).attr("precioRealC", respuesta["precio_Compra"]);
+
+            // AGRUPAR PRODUCTOS EN JSON
+            listarProductosC()
 
         }
     })
@@ -307,4 +353,202 @@ $(".formularioCompra").on("change", "input.nuevaCantidadProductoC", function () 
 
     precioC.val(precioFinalC);
 
+    let nuevoStockC = Number($(this).attr("stock")) + Number($(this).val());
+    $(this).attr("nuevoStockC", nuevoStockC);
+
+    // Sumar el total de los precios
+    sumarTotalPreciosC();
+
+    // Agregar Impuesto
+    agregarImpuestoC();
+
+    // AGRUPAR PRODUCTOS EN JSON
+    listarProductosC()
+
 })
+
+/*=============================================
+    SUMAR TODOS LOS PRECIOS
+=============================================*/
+
+function sumarTotalPreciosC(){
+
+    let precioItemC = $(".nuevoPrecioProductoC");
+    let arraySumaPrecioC = [];
+
+    for(let i = 0; i < precioItemC.length; i++){
+
+        arraySumaPrecioC.push(Number($(precioItemC[i]).val()));
+        
+    }
+
+    function sumaArrayPreciosC(total, numero){
+
+        return total + numero;
+    }
+
+    let sumaTotalPrecioC = arraySumaPrecioC.reduce(sumaArrayPreciosC);
+    
+    $("#nuevoTotalCompra").val(sumaTotalPrecioC);
+    $("#totalCompra").val(sumaTotalPrecioC);
+    $("#nuevoTotalCompra").attr("total", sumaTotalPrecioC);
+    
+
+
+}
+
+/*=============================================
+    AGREGAR IMPUESTO
+=============================================*/
+
+function agregarImpuestoC(){
+
+    let impuestoC = $("#nuevoImpuestoCompra").val();
+    let precioTotalC = $("#nuevoTotalCompra").attr("total");
+    
+    let precioImpuestoC = Number(precioTotalC * impuestoC/100);
+    let totalConImpuestoC = Number(precioImpuestoC) + Number(precioTotalC);
+
+    $("#nuevoTotalCompra").val(totalConImpuestoC);
+    $("#totalCompra").val(totalConImpuestoC);
+    $("#nuevoPrecioImpuestoC").val(precioImpuestoC);
+    $("#nuevoPrecioNetoC").val(precioTotalC);
+}
+
+/*=============================================
+    AL CAMBIAR EL IMPUESTO
+=============================================*/
+
+$("#nuevoImpuestoCompra").change(function() {
+
+    agregarImpuestoC();
+})
+
+// FORMATO AL PRECIO FINAL
+
+$("#nuevoTotalCompra").number(true, 2);
+
+/*=============================================
+    seleccionar metodo de pago
+=============================================*/
+
+$("#nuevoMetodoPagoC").change(function(){
+
+    let metodo = $(this).val();
+
+    if (metodo == "Efectivo"){
+
+        $(this).parent().parent().removeClass("col-xs-6");
+        $(this).parent().parent().addClass("col-xs-4");
+        $(this).parent().parent().parent().children(".cajasMetodoPagoC").html(
+        
+            '<div class="col-xs-4">'+
+                '<div class="input-group">'+
+                    '<span class="input-group-addon"><i class="ion ion-social-usd"></i></span>'+
+                    '<input type="text" class="form-control nuevoValorEfectivoC" placeHolder="000000" required>'+
+                '</div>'+
+            '</div>'+
+            '<div class="col-xs-4 capturarCambioEfectivoC" style="padding-left:0px">'+
+                '<div class="input-group">'+
+                    '<span class="input-group-addon"><i class="ion ion-social-usd"></i></span>'+
+                    '<input type="text" class="form-control nuevoCambioEfectivoC" placeHolder="000000" required readonly>' +
+                '</div>'+
+            '</div>'
+
+        )
+        // Agregar formato al precio
+
+        $('.nuevoValorEfectivoC').number(true,2);
+        $('.nuevoCambioEfectivoC').number(true,2);
+
+        // LISTAR METODO EN LA ENTRADA
+        listarMetodosC()
+
+    }else{
+
+        $(this).parent().parent().removeClass("col-xs-4");
+        $(this).parent().parent().addClass("col-xs-6");
+        $(this).parent().parent().parent().children(".cajasMetodoPagoC").html(
+
+            '<div class="col-xs-6" style="padding-left:0px">'+
+                '<div class="input-group">'+
+                    '<input type="text" class="form-control" id="nuevoCodigoTransaccionC" name="nuevoCodigoTransaccionC" placeholder="Código transacción" required>'+
+                    '<span class="input-group-addon"><i class="fa fa-lock"></i></span>'+
+                '</div>'+
+            '</div>'
+
+        )
+
+    }
+
+})
+
+/*=============================================
+    CAMBIO EN EFECTIVO
+=============================================*/
+
+$(".formularioCompra").on("change", "input.nuevoValorEfectivoC", function () {
+
+    let efectivoC = $(this).val();
+    let cambioC = Number(efectivoC) - Number($("#nuevoTotalCompra").val());
+
+    let nuevoCambioEfectivoC = $(this).parent().parent().parent().children(".capturarCambioEfectivoC").children().children(".nuevoCambioEfectivoC");
+
+    nuevoCambioEfectivoC.val(cambioC);
+
+})
+
+/*=============================================
+    CAMBIO TRANSACCIÓN
+=============================================*/
+
+$(".formularioCompra").on("change", "input#nuevoCodigoTransaccionC", function () {
+
+    // LISTAR METODO EN LA ENTRADA
+    listarMetodosC()
+
+})
+
+/*=============================================
+    LISTAR TODOS LOS PRODUCTOS
+=============================================*/
+
+function listarProductosC(){
+    let listaProductosC = [];
+    // let id =;
+    let nombre = $(".agregarProductoCompra");
+    let cantidad = $(".nuevaCantidadProductoC");
+    let precio = $(".nuevoPrecioProductoC");
+    // let total = 
+
+    for(let i = 0; i < nombre.length; i++){
+
+        listaProductosC.push({"id":$(nombre[i]).attr("idProducto"), 
+                              "nombre":$(nombre[i]).val(),
+                              "cantidad":$(cantidad[i]).val(),
+                              "stock":$(cantidad[i]).attr("nuevoStockC"),
+                              "precio":$(precio[i]).attr("precioRealC"),
+                              "total":$(precio[i]).val()
+                            })
+
+    }
+    console.log('listaProductosC:', JSON.stringify(listaProductosC));
+    $("#listaProductosC").val(JSON.stringify(listaProductosC));
+
+    $("#listaProductosC").val(JSON.stringify(listaProductosC));
+}
+
+/*=============================================
+    LISTAR METODOS DE PAGO
+=============================================*/
+
+function listarMetodosC(){
+
+    let listaMetodosC = "";
+    if($("#nuevoMetodoPagoC").val()=="Efectivo"){
+
+        $("#listaMetodoPagoC").val("Efectivo");
+    }else{
+        $("#listaMetodoPagoC").val($("#nuevoMetodoPagoC").val() + "-" + $("#nuevoCodigoTransaccionC").val());
+    }
+}
