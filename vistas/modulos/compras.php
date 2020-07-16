@@ -47,7 +47,7 @@
            
            <th style="width:10px">#</th>
            <th>Código factura</th>
-           <th>Cliente</th>
+           <th>Proveedor</th>
            <th>Vendedor</th>
            <th>Forma de pago</th>
            <!-- <th>Impuesto</th> -->
@@ -61,103 +61,72 @@
         </thead>
 
         <tbody>
-<!-- 
+
           <?php
 
             $item=null;
             $valor=null;
-            $respuesta = ControladorVentas::ctrMostrarVentas($item, $valor);
+            $respuesta = ControladorCompras::ctrMostrarCompras($item, $valor);
 
             // var_dump($respuesta);
 
             foreach ($respuesta as $key => $value) {
-              echo '<tr>
+                echo '<tr>
+                        <td>'.($key+1).'</td>
 
-                      <td>'.($key+1).'</td>
+                        <td>'.$value["codigo"].'</td>';
 
-                      <td>'.$value["codigo"].'</td>';
+                        $itemProveedor = "id";
+                        $valorProveedor = $value["id_proveedor"];
+                        $respuestaProveedor = ControladorProveedores::ctrMostrarProveedores($itemProveedor, $valorProveedor);
 
-                      $itemCliente = "id";
-                      $valorCliente = $value["id_cliente"];
-                      $respuestaCliente = ControladorClientes::ctrMostrarClientes($itemCliente, $valorCliente);
+                        echo '
 
-                      echo '
+                        <td>'.$respuestaProveedor["nombre"].'</td>';
 
-                      <td>'.$respuestaCliente["nombre"].'</td>';
+                        $itemUsuario = "id";
+                        $valorUsuario = $value["id_usuario"];
+                        $respuestaUsuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
 
-                      $itemUsuario = "id";
-                      $valorUsuario = $value["id_vendedor"];
-                      $respuestaUsuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
+                        echo '
 
-                      echo '
+                        <td>'.$respuestaUsuario["nombre"].'</td>
 
-                      <td>'.$respuestaUsuario["nombre"].'</td>
+                        <td>'.$value["metodo_pago"].'</td>
 
-                      <td>'.$value["metodo_pago"].'</td>
+                        <td>$ '.number_format($value["neto"],2).'</td>
 
-                      <td>$ '.number_format($value["neto"],2).'</td>
+                        <td>$ '.number_format($value["total"],2).'</td>
 
-                      <td>$ '.number_format($value["total"],2).'</td>
+                        <td>'.$value["fecha"].'</td>
 
-                      <td>'.$value["fecha"].'</td>
 
-                      <td>
+                        <td>
 
-                        <div class="btn-group">
+                            <div class="btn-group">
                         
-                          <button class="btn btn-success btnImprimirFactura" codigoVenta="'.$value["codigo"].'">
+                                <button class="btn btn-success btnImprimirFactura" codigoCompra="'.$value["codigo"].'">
 
-                            <i class="fa fa-print"></i>
+                                    <i class="fa fa-print"></i>
 
-                          </button>';
+                                </button>';
 
-                          if($_SESSION["perfil"] == "Administrador"){
+                                if($_SESSION["perfil"] == "Administrador"){
 
-                          echo '<button class="btn btn-warning btnEditarVenta" idVenta="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
+                                echo '<button class="btn btn-warning btnEditarCompra" idCompra="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
 
-                          <button class="btn btn-danger btnEliminarVenta" idVenta="'.$value["id"].'"><i class="fa fa-times"></i></button>';
+                                <button class="btn btn-danger btnEliminarCompra" idCompra="'.$value["id"].'"><i class="fa fa-times"></i></button>';
 
-                        }
+                                }
 
-                        echo '</div>  
+                                echo '</div>
+                        </td>
 
-                      </td>
-
-                    </tr>';
+                    </tr>
+                ';
             }
+            
           ?>
-           -->
-          <tr>
-
-            <td>1</td>
-
-            <td>1000123</td>
-
-            <td>Juan Villegas</td>
-
-            <td>Julio Gómez</td>
-
-            <td>TC-12412425346</td>
-
-            <td>$ 1,000.00</td>
-
-            <td>$ 1,190.00</td>
-
-            <td>2017-12-11 12:05:32</td>
-
-            <td>
-
-              <div class="btn-group">
-                  
-                <button class="btn btn-success"><i class="fa fa-print"></i></button>
-
-                <button class="btn btn-danger"><i class="fa fa-times"></i></button>
-
-              </div>  
-
-            </td>
-
-          </tr>
           
         </tbody>
 

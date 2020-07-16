@@ -300,7 +300,7 @@ if($_SESSION["perfil"] == "Especial"){
 
       <div class="col-lg-7 hidden-md hidden-sm hidden-xs">
         
-        <div class="box box-primary">
+        <div class="box box-success">
 
           <div class="box-header with-border"></div>
 

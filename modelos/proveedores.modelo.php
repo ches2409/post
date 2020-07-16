@@ -129,7 +129,7 @@ class ModeloProveedores{
 
 	}
 	/*=============================================
-	ACTUALIZAR CLIENTE
+	ACTUALIZAR PROVEEDOR
 	=============================================*/
 
 	static public function mdlActualizarProveedor($tabla, $item1, $valor1, $valor){

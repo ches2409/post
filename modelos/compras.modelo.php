@@ -36,5 +36,34 @@ class ModeloCompras{
 
 	}
 
+	// =====================================
+    //     REGISTRO DE COMPRAS
+    // ====================================== 
 
+	static public function mdlIngresarCompra($tabla, $datos){
+		
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(codigo, id_proveedor, id_usuario, productos, impuesto, neto, total, metodo_pago) VALUES (:codigo, :id_proveedor, :id_usuario, :productos, :impuesto, :neto, :total, :metodo_pago)");
+
+		$stmt->bindParam(":codigo", $datos["codigo"], PDO::PARAM_INT);
+		$stmt->bindParam(":id_proveedor", $datos["id_proveedor"], PDO::PARAM_INT);
+		$stmt->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
+		$stmt->bindParam(":productos", $datos["productos"], PDO::PARAM_STR);
+		$stmt->bindParam(":impuesto", $datos["impuesto"], PDO::PARAM_STR);
+		$stmt->bindParam(":neto", $datos["neto"], PDO::PARAM_STR);
+		$stmt->bindParam(":total", $datos["total"], PDO::PARAM_STR);
+		$stmt->bindParam(":metodo_pago", $datos["metodo_pago"], PDO::PARAM_STR);
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return "error";
+		
+		}
+
+		$stmt->close();
+		$stmt = null;
+	}
 }
