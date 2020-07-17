@@ -149,7 +149,7 @@ CUERPO DOCUMENTO
         $_GET["ruta"] == "crear-venta" ||
         $_GET["ruta"] == "reportes" ||
         $_GET["ruta"] == "compras" ||
-        // $_GET["ruta"] == "editar-compra" ||
+        $_GET["ruta"] == "editar-compra" ||
         $_GET["ruta"] == "crear-compra" ||
         // $_GET["ruta"] == "reportes-compras" ||
         // $_GET["ruta"] == "ayuda" ||

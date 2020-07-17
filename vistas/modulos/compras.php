@@ -110,6 +110,7 @@
                                     <i class="fa fa-print"></i>
 
                                 </button>';
+                                
 
                                 if($_SESSION["perfil"] == "Administrador"){
 

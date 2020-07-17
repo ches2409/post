@@ -12,7 +12,7 @@
 
     <ol class="breadcrumb">
       
-      <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li><a href="inicio"><i class="fa fa-home"></i> Inicio</a></li>
       
       <li class="active">Tablero</li>
     
@@ -51,6 +51,23 @@
           ?>
 
         </div>
+
+
+        <div class="col-lg-12">
+
+          <?php
+
+          if($_SESSION["perfil"] =="Administrador"){
+          
+           include "reportes/grafico-ventas.php";
+
+          }
+
+          ?>
+
+        </div>
+
+
 
         <div class="col-lg-6">
 

@@ -22,13 +22,13 @@
 
     <div class="error-page">
       
-      <h2 class="headline text-primary">404</h2> 
+      <h2 class="headline text-success">404</h2> 
 
       <div class="error-content">
 
         <h3>
 
-          <i class="fa fa-warning text-primary"></i> 
+          <i class="fa fa-warning text-success"></i> 
 
           Ooops! Página no encontrada.
 

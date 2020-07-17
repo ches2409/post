@@ -514,11 +514,11 @@ $(".formularioCompra").on("change", "input#nuevoCodigoTransaccionC", function ()
 =============================================*/
 
 function listarProductosC(){
-    let listaProductosC = [];
+    var listaProductosC = [];
     // let id =;
-    let nombre = $(".agregarProductoCompra");
-    let cantidad = $(".nuevaCantidadProductoC");
-    let precio = $(".nuevoPrecioProductoC");
+    var nombre = $(".agregarProductoCompra");
+    var cantidad = $(".nuevaCantidadProductoC");
+    var precio = $(".nuevoPrecioProductoC");
     // let total = 
 
     for(let i = 0; i < nombre.length; i++){
@@ -552,3 +552,14 @@ function listarMetodosC(){
         $("#listaMetodoPagoC").val($("#nuevoMetodoPagoC").val() + "-" + $("#nuevoCodigoTransaccionC").val());
     }
 }
+
+/*=============================================
+    BOTON EDITAR COMPRA
+=============================================*/
+
+$(".btnEditarCompra").click(function(){
+
+    let idCompra = $(this).attr("idCompra");
+
+    window.location = "index.php?ruta=editar-compra&idCompra="+idCompra;
+})

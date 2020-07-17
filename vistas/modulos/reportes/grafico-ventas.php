@@ -4,13 +4,13 @@ error_reporting(0);
 
 if(isset($_GET["fechaInicial"])){
 
-    $fechaInicial = $_GET["fechaInicial"];
-    $fechaFinal = $_GET["fechaFinal"];
+  $fechaInicial = $_GET["fechaInicial"];
+  $fechaFinal = $_GET["fechaFinal"];
 
 }else{
 
-$fechaInicial = null;
-$fechaFinal = null;
+  $fechaInicial = null;
+  $fechaFinal = null;
 
 }
 
@@ -22,8 +22,8 @@ $sumaPagosMes = array();
 
 foreach ($respuesta as $key => $value) {
 
-	#Capturamos sólo el año y el mes
-	$fecha = substr($value["fecha"],0,7);
+	#Capturamos sólo el año y el mes (7) dia(10) hora(15)
+	$fecha = substr($value["fecha"],0,10);
 
 	#Introducir las fechas en arrayFechas
 	array_push($arrayFechas, $fecha);
@@ -54,9 +54,9 @@ GRÁFICO DE VENTAS
 	
 	<div class="box-header">
 		
- 		<i class="fa fa-th"></i>
+    <i class="fa fa-usd"></i>
 
-  		<h3 class="box-title">Gráfico de Ventas</h3>
+    <h1 class="box-title">Gráfico de Ventas</h1>
 
 	</div>
 
@@ -75,28 +75,21 @@ GRÁFICO DE VENTAS
     resize           : true,
     data             : [
 
-    <?php
+                          <?php
 
-    if($noRepetirFechas != null){
+                            if($noRepetirFechas != null){
+                              foreach($noRepetirFechas as $key){
+                                echo "{ y: '".$key."', ventas: ".$sumaPagosMes[$key]." },";
+                              }
+                              echo "{y: '".$key."', ventas: ".$sumaPagosMes[$key]." }";
+                            }else{
+                                echo "{ y: '0', ventas: '0' }";
+                            }
 
-	    foreach($noRepetirFechas as $key){
+                          ?>
 
-	    	echo "{ y: '".$key."', ventas: ".$sumaPagosMes[$key]." },";
+                        ],
 
-
-	    }
-
-	    echo "{y: '".$key."', ventas: ".$sumaPagosMes[$key]." }";
-
-    }else{
-
-       echo "{ y: '0', ventas: '0' }";
-
-    }
-
-    ?>
-
-    ],
     xkey             : 'y',
     ykeys            : ['ventas'],
     labels           : ['ventas'],

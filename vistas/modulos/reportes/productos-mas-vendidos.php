@@ -6,11 +6,10 @@ $orden = "ventas";
 
 $productos = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
 
-// $colores = array("red","green","yellow","aqua","purple","blue","cyan","magenta","orange","gold");
-
 $colores = array("#f56954","#00a65a","#f39c12","lightSkyBlue","steelBlue","lightSteelBlue","cadetBlue","mediumPurple","orangeRed","pink");
 
 $totalVentas = ControladorProductos::ctrMostrarSumaVentas();
+// var_dump($productos);
 
 
 ?>
@@ -20,91 +19,84 @@ PRODUCTOS MÁS VENDIDOS
 ======================================-->
 
 <div class="box box-primary">
-	
-	<div class="box-header with-border">
+
+  <div class="box-header with-border">
+    <h2 class="box-title">Productos más vendidos</h2>
+  </div>
+
+
+  <div class="box-body">
+
+    <div class="row">
+
+      <div class="col-md-8">
+
+        <div class="chart-responsive">
+          <canvas id="pieChart" height="300"></canvas>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-4">
+
+        <ul class="chart-legend clearfix">
+        <br>
+        <br>
+        <?php
+
+        for($i = 0; $i < 10; $i++){
+
+        echo '<li style="font-size:16px"><i class="fa fa-circle-o" style="color:'.$colores[$i].'; font-size:18px"></i>  '.$productos[$i]["nombre"].'</li>';
+
+        }
+
+
+        ?>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="box-footer no-padding">
+    <ul class="nav nav-pills nav-stacked">
+
+
+    <?php
+
+        for($i = 0; $i <10; $i++){
   
-      <h3 class="box-title">Productos más vendidos</h3>
+        echo '<li>
+        
+        <a>
 
-    </div>
+        <img src="'.$productos[$i]["imagen"].'" class="img-thumbnail" width="60px" style="margin-right:10px"> 
+        '.$productos[$i]["nombre"].'
 
-	<div class="box-body">
-    
-      	<div class="row">
+        <span class="pull-right " style="color:'.$colores[$i].'">   
+        '.ceil($productos[$i]["ventas"]*100/$totalVentas["total"]).'%
+        </span>
+        
+        </a>
 
-	        <div class="col-md-7">
-
-	 			<div class="chart-responsive">
-	            
-	            	<canvas id="pieChart" height="150"></canvas>
-	          
-	          	</div>
-
-	        </div>
-
-		    <div class="col-md-5">
-		      	
-		  	 	<ul class="chart-legend clearfix">
-
-		  	 	<?php
-
-					for($i = 0; $i < 10; $i++){
-
-          // echo ' <li><i class="fa fa-circle-o text-'.$colores[$i].'"></i> '.$productos[$i]["descripcion"].'</li>';
-          
-          echo '<li style="font-size:16px"><i class="fa fa-circle-o" style="color:'.$colores[$i].'; font-size:18px"></i>  '.$productos[$i]["nombre"].'</li>';
-
-					}
-
-
-		  	 	?>
-
-
-		  	 	</ul>
-
-		    </div>
-
-		</div>
-
-    </div>
-
-    <div class="box-footer no-padding">
-    	
-		<ul class="nav nav-pills nav-stacked">
-			
-			 <?php
-
-          	for($i = 0; $i <5; $i++){
-			
-          		echo '<li>
-						 
-						 <a>
-
-						 <img src="'.$productos[$i]["imagen"].'" class="img-thumbnail" width="60px" style="margin-right:10px"> 
-						 '.$productos[$i]["nombre"].'
-
-            
-             <span class="pull-right " style="color:'.$colores[$i].'">   
-						 '.ceil($productos[$i]["ventas"]*100/$totalVentas["total"]).'%
-						 </span>
-							
-						 </a>
-
-      				</li>';
+        </li>';
 
 			}
 
-			?>
+    ?>
+      
+    </ul>
+  </div>
 
-
-		</ul>
-
-    </div>
 
 </div>
 
 <script>
-	
-
   // -------------
   // - PIE CHART -
   // -------------
@@ -113,20 +105,28 @@ PRODUCTOS MÁS VENDIDOS
   var pieChart       = new Chart(pieChartCanvas);
   var PieData        = [
 
-  <?php
 
-  for($i = 0; $i < 10; $i++){
+    <?php
 
-  	echo "{
-      value    : ".$productos[$i]["ventas"].",
-      color    : '".$colores[$i]."',
-      highlight: '".$colores[$i]."',
-      label    : '".$productos[$i]["descripcion"]."'
-    },";
+      for($i = 0; $i < 5; $i++){
 
-  }
+        echo "{
+          value    : ".$productos[$i]["ventas"].",
+          color    : '".$colores[$i]."',
+          highlight: '".$colores[$i]."',
+          label    : '".$productos[$i]["descripcion"]."'
+        },";
+
+      }
     
-   ?>
+  ?>
+    // color    : '#f56954', coral
+    // color    : '#00a65a',limeGreen / mediumSeaGreen
+    // color    : '#f39c12', gold
+    // color    : '#00c0ef', lightSkyBlue
+    // color    : '#3c8dbc', steelBlue
+    // color    : '#d2d6de', whiteSmoke
+      
   ];
   var pieOptions     = {
     // Boolean - Whether we should show a stroke on each segment
@@ -160,6 +160,4 @@ PRODUCTOS MÁS VENDIDOS
   // -----------------
   // - END PIE CHART -
   // -----------------
-
-
 </script>

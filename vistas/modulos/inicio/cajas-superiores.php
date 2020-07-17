@@ -6,11 +6,16 @@ $orden = "id";
 
 $ventas = ControladorVentas::ctrSumaTotalVentas();
 
+// $compras = ControladorCompras::ctrSumaTotalCompras();
+
 $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
 $totalCategorias = count($categorias);
 
 $clientes = ControladorClientes::ctrMostrarClientes($item, $valor);
 $totalClientes = count($clientes);
+
+$proveedores = ControladorProveedores::ctrMostrarProveedores($item, $valor);
+$totalProveedores = count($proveedores);
 
 $productos = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
 $totalProductos = count($productos);
@@ -21,7 +26,7 @@ $totalProductos = count($productos);
 
 <div class="col-lg-3 col-xs-6">
 
-  <div class="small-box bg-aqua">
+  <div class="small-box bg-green">
     
     <div class="inner">
       
@@ -49,19 +54,19 @@ $totalProductos = count($productos);
 
 <div class="col-lg-3 col-xs-6">
 
-  <div class="small-box bg-green">
+  <div class="small-box bg-aqua">
     
     <div class="inner">
     
-      <h3><?php echo number_format($totalCategorias); ?></h3>
+      <h3>$ 0000</h3>
 
-      <p>Categorías</p>
+      <p>Compras</p>
     
     </div>
     
     <div class="icon">
     
-      <i class="ion ion-clipboard"></i>
+      <i class="ion ion-bag"></i>
     
     </div>
     
@@ -75,7 +80,7 @@ $totalProductos = count($productos);
 
 </div>
 
-<div class="col-lg-3 col-xs-6">
+<div class="col-lg-2 col-xs-4">
 
   <div class="small-box bg-yellow">
     
@@ -101,9 +106,49 @@ $totalProductos = count($productos);
 
   </div>
 
+
+  
+
+
+
+
 </div>
 
-<div class="col-lg-3 col-xs-6">
+<div class="col-lg-2 col-xs-4">
+
+  <div class="small-box bg-purple">
+    
+    <div class="inner">
+    
+      <h3><?php echo number_format($totalProveedores); ?></h3>
+
+      <p>Proveedores</p>
+  
+    </div>
+    
+    <div class="icon">
+    
+      <i class="ion ion-person-add"></i>
+    
+    </div>
+    
+    <a href="proveedores" class="small-box-footer">
+
+      Más info <i class="fa fa-arrow-circle-right"></i>
+
+    </a>
+
+  </div>
+
+
+  
+
+
+
+
+</div>
+
+<div class="col-lg-2 col-xs-4">
 
   <div class="small-box bg-red">
   

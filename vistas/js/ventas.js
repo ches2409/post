@@ -74,7 +74,7 @@ $(".tablaVentas tbody").on("click", "button.agregarProducto", function(){
       	success:function(respuesta){
 
       	    var descripcion = respuesta["nombre"];
-          	var stock = respuesta["stock"];
+          	let stock = respuesta["stock"];
           	var precio = respuesta["precio_venta"];
 
           	/*=============================================
@@ -411,7 +411,7 @@ $(".formularioVenta").on("change", "input.nuevaCantidadProducto", function(){
 	
 	precio.val(precioFinal);
 
-	var nuevoStock = Number($(this).attr("stock")) - $(this).val();
+	let nuevoStock = Number($(this).attr("stock")) - $(this).val();
 
 	$(this).attr("nuevoStock", nuevoStock);
 
@@ -641,7 +641,7 @@ function listarProductos(){
 
 	var descripcion = $(".nuevaDescripcionProducto");
 
-	var cantidad = $(".nuevaCantidadProducto");
+	let cantidad = $(".nuevaCantidadProducto");
 
 	var precio = $(".nuevoPrecioProducto");
 
