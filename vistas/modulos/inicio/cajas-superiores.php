@@ -58,7 +58,7 @@ $totalProductos = count($productos);
     
     <div class="inner">
     
-      <h3>$ 0000</h3>
+      <h3>$0.00</h3>
 
       <p>Compras</p>
     
